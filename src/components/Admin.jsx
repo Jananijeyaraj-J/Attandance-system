@@ -4,7 +4,7 @@ import axios from "axios";
 const Admin = () => {
   const [admins, setAdmins] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newAdmin, setNewAdmin] = useState({ username: "", password: "" });
+  const [newAdmin, setNewAdmin] = useState({ firstName: "", lastName: "", email: "", username: ""});
   const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
 
   useEffect(() => {
@@ -13,15 +13,12 @@ const Admin = () => {
 
   const fetchAdmins = async () => {
     try {
-      const response = await axios.get(
-        "https://csice-attendance.saranmani.tech/api/v1/admin",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Add the bearer token here
-          },
-        }
-      );
-      setAdmins(response.data.data || []);
+      const response = await axios.get("https://csice-attendance.saranmani.tech/api/v1/admin", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAdmins(response.data.data.admins || []);
     } catch (error) {
       console.error("Error fetching admins", error);
     }
@@ -29,18 +26,14 @@ const Admin = () => {
 
   const handleAddAdmin = async () => {
     try {
-      const response = await axios.post(
-        "https://csice-attendance.saranmani.tech/api/v1/admin",
-        newAdmin,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Add the bearer token here
-          },
-        }
-      );
+      const response = await axios.post("https://csice-attendance.saranmani.tech/api/v1/admin", newAdmin, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setAdmins([...admins, response.data.data]);
       setIsModalOpen(false);
-      setNewAdmin({ username: "", password: "" });
+      setNewAdmin({ firstName: "", lastName: "", email: "", username: "", password: "" });
     } catch (error) {
       console.error("Error adding admin", error);
     }
@@ -83,23 +76,29 @@ const Admin = () => {
             <h3 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>Add New Admin</h3>
             <input
               style={{ width: "100%", padding: "10px", border: "1px solid #ddd", borderRadius: "6px", marginBottom: "12px" }}
-              placeholder="Username"
-              value={newAdmin.username}
-              onChange={(e) =>
-                setNewAdmin({ ...newAdmin, username: e.target.value })
-              }
+              placeholder="First Name"
+              value={newAdmin.firstName}
+              onChange={(e) => setNewAdmin({ ...newAdmin, firstName: e.target.value })}
             />
             <input
-              type="password"
-              style={{ width: "100%", padding: "10px", border: "1px solid #ddd", borderRadius: "6px", marginBottom: "16px" }}
-              placeholder="Password"
-              value={newAdmin.password}
-              onChange={(e) =>
-                setNewAdmin({ ...newAdmin, password: e.target.value })
-              }
+              style={{ width: "100%", padding: "10px", border: "1px solid #ddd", borderRadius: "6px", marginBottom: "12px" }}
+              placeholder="Last Name"
+              value={newAdmin.lastName}
+              onChange={(e) => setNewAdmin({ ...newAdmin, lastName: e.target.value })}
+            />
+            <input
+              style={{ width: "100%", padding: "10px", border: "1px solid #ddd", borderRadius: "6px", marginBottom: "12px" }}
+              placeholder="Email"
+              value={newAdmin.email}
+              onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
+            />
+            <input
+              style={{ width: "100%", padding: "10px", border: "1px solid #ddd", borderRadius: "6px", marginBottom: "12px" }}
+              placeholder="Username"
+              value={newAdmin.username}
+              onChange={(e) => setNewAdmin({ ...newAdmin, username: e.target.value })}
             />
             <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px" }}>
-             
               <button
                 style={{ padding: "10px 16px", background: "linear-gradient(to right, #c31432, #240b36)", color: "white", borderRadius: "6px", border: "none", cursor: "pointer", boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)" }}
                 onClick={handleAddAdmin}

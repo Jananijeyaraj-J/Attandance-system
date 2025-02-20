@@ -4,13 +4,12 @@ import axios from "axios";
 const Students = () => {
   const [students, setStudents] = useState([]);
   const [newStudent, setNewStudent] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
-    username: "",
-    rollno: "",
-    department: "CSE", // Default value
-    year: "2nd" // Default value
+    examNo: "",
+    rollNo: "",
+    department: "IT", // Default value
+    year: 4 // Default value
   });
   const [editing, setEditing] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -49,11 +48,10 @@ const Students = () => {
 
   const handleEditStudent = (student) => {
     setNewStudent({
-      firstName: student.firstName,
-      lastName: student.lastName,
+      name: student.name,
       email: student.email,
-      username: student.username,
-      rollno: student.rollno,
+      examNo: student.examNo,
+      rollNo: student.rollNo,
       department: student.department,
       year: student.year,
     });
@@ -90,7 +88,7 @@ const Students = () => {
       <h2 style={{ textAlign: "center" }}>Students</h2>
       <button
         onClick={() => {
-          setNewStudent({ firstName: "", lastName: "", email: "", username: "", rollno: "", department: "CSE", year: "2nd" });
+          setNewStudent({ name: "", email: "", examNo: "", rollNo: "", department: "IT", year: 4 });
           setShowPopup(true);
         }}
         style={buttonStyle}
@@ -100,10 +98,9 @@ const Students = () => {
       <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "10px" }}>
         <thead>
           <tr style={{ backgroundColor: "#f2f2f2", textAlign: "center" }}>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
             <th>Email</th>
-            <th>Username</th>
+            <th>Exam No</th>
             <th>Roll No</th>
             <th>Department</th>
             <th>Year</th>
@@ -113,11 +110,10 @@ const Students = () => {
         <tbody>
           {students.map((student) => (
             <tr key={student._id} style={{ textAlign: "center", borderBottom: "1px solid #ddd" }}>
-              <td>{student.firstName}</td>
-              <td>{student.lastName}</td>
+              <td>{student.name}</td>
               <td>{student.email}</td>
-              <td>{student.username}</td>
-              <td>{student.rollno}</td>
+              <td>{student.examNo}</td>
+              <td>{student.rollNo}</td>
               <td>{student.department}</td>
               <td>{student.year}</td>
               <td>
@@ -135,25 +131,23 @@ const Students = () => {
         }}>
           <div style={{ backgroundColor: "#ffffff", padding: "20px", borderRadius: "10px", width: "400px", textAlign: "center" }}>
             <h3>{editing ? "Edit Student" : "Add Student"}</h3>
-            <input type="text" placeholder="First Name" value={newStudent.firstName} onChange={(e) => setNewStudent({ ...newStudent, firstName: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
-            <input type="text" placeholder="Last Name" value={newStudent.lastName} onChange={(e) => setNewStudent({ ...newStudent, lastName: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
+            <input type="text" placeholder="Name" value={newStudent.name} onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
             <input type="email" placeholder="Email" value={newStudent.email} onChange={(e) => setNewStudent({ ...newStudent, email: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
-            <input type="text" placeholder="Username" value={newStudent.username} onChange={(e) => setNewStudent({ ...newStudent, username: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
-            <input type="text" placeholder="Roll No" value={newStudent.rollno} onChange={(e) => setNewStudent({ ...newStudent, rollno: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
+            <input type="text" placeholder="Exam No" value={newStudent.examNo} onChange={(e) => setNewStudent({ ...newStudent, examNo: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
+            <input type="text" placeholder="Roll No" value={newStudent.rollNo} onChange={(e) => setNewStudent({ ...newStudent, rollNo: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }} />
             
             {/* Department Dropdown */}
             <select value={newStudent.department} onChange={(e) => setNewStudent({ ...newStudent, department: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}>
-            <option value="IT">IT</option>
-            <option value="CSE">CSE</option>
-            <option value="ECE">ECE</option>
-              
+              <option value="IT">IT</option>
+              <option value="CSE">CSE</option>
+              <option value="ECE">ECE</option>
             </select>
 
             {/* Year Dropdown */}
-            <select value={newStudent.year} onChange={(e) => setNewStudent({ ...newStudent, year: e.target.value })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}>
-              <option value="2nd">2nd</option>
-              <option value="3rd">3rd</option>
-              <option value="4th">4th</option>
+            <select value={newStudent.year} onChange={(e) => setNewStudent({ ...newStudent, year: parseInt(e.target.value) })} style={{ width: "100%", marginBottom: "10px", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}>
+              <option value={2}>2nd</option>
+              <option value={3}>3rd</option>
+              <option value={4}>4th</option>
             </select>
 
             <button onClick={editing ? handleUpdateStudent : handleAddStudent} style={buttonStyle}>{editing ? "Update" : "Add"}</button>
